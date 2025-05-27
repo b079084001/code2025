@@ -1,15 +1,15 @@
 <template>
-  <!--Í·²¿ÇøÓò¿ªÊ¼-->
+  <!--ä¸Šæ–¹åŒºåŸŸå¼€å§‹-->
   <div style="height: 60px;display: flex">
     <div style="width: 240px;display: flex;align-items: center;padding-left: 10px;background-color: #3a456b;">
       <img style="width: 40px;height: 40px;border-radius: 50%" src="@/assets/imgs/logo.png" alt="">
       <div>
-        <span style="font-size: 20px;font-weight: bold;color: #2c82ff;margin-left: 5px">Graduation2025</span>
+        <span style="font-size: 20px;font-weight: bold;color: #2c82ff;margin-left: 5px">æ¯•ä¸šè®¾è®¡2025</span>
       </div>
     </div>
 
     <div style="flex:1;border-bottom: 1px solid #ddd;display: flex;align-items: center;">
-      Home/Navigator One
+      ä¸»é¡µ/æ•°æ®åˆ†æ
     </div>
 
     <div style="width: fit-content;display: flex;align-items: center;padding-right: 20px;border-bottom: 1px solid #ddd">
@@ -20,43 +20,43 @@
         </div>
         <template #dropdown>
           <el-dropdown-menu>
-            <el-dropdown-item>Action 11111</el-dropdown-item>
-            <el-dropdown-item>Action 21111</el-dropdown-item>
+            <el-dropdown-item>ä¸ªäººä¿¡æ¯</el-dropdown-item>
+            <el-dropdown-item>ä¿®æ”¹å¯†ç </el-dropdown-item>
           </el-dropdown-menu>
         </template>
       </el-dropdown>
 
     </div>
   </div>
-  <!--Í·²¿ÇøÓò½áÊø-->
+  <!--ä¸Šæ–¹åŒºåŸŸç»“æŸ-->
 
-  <!--ÏÂ·½ÇøÓò¿ªÊ¼-->
+  <!--ä¸‹æ–¹åŒºåŸŸå¼€å§‹-->
   <div style="display: flex">
-    <!--²Ëµ¥ÇøÓò¿ªÊ¼-->
+    <!--èœå•åŒºåŸŸå¼€å§‹-->
     <div style="width: 240px">
       <el-menu router :default-openeds="['1']" :default-active="router.currentRoute.value.path" style="min-height: calc(100vh - 60px)">
         <el-menu-item index="/manager/home">
           <el-icon><House /></el-icon>
-          <span>Home</span>
+          <span>ä¸»é¡µ</span>
         </el-menu-item>
         <el-sub-menu index="1">
           <template #title>
             <el-icon><location /></el-icon>
-            <span>Navigator One</span>
+            <span>æ•°æ®ç®¡ç†</span>
           </template>
-          <el-menu-item index="/manager/about">About</el-menu-item>
+          <el-menu-item index="/manager/about">å…³äº</el-menu-item>
         </el-sub-menu>
       </el-menu>
     </div>
-    <!--²Ëµ¥ÇøÓò½áÊø-->
+    <!--èœå•åŒºåŸŸç»“æŸ-->
 
-    <!--Êı¾İäÖÈ¾ÇøÓò¿ªÊ¼-->
+    <!--æ•°æ®æ¸²æŸ“åŒºåŸŸå¼€å§‹-->
     <div style="flex: 1;width: 0;padding: 10px;background-color: #f2f4ff;">
       <RouterView />
     </div>
-    <!--Êı¾İäÖÈ¾ÇøÓò½áÊø-->
+    <!--æ•°æ®æ¸²æŸ“åŒºåŸŸç»“æŸ-->
   </div>
-  <!--ÏÂ·½ÇøÓò½áÊø-->
+  <!--ä¸‹æ–¹åŒºåŸŸç»“æŸ-->
 
 </template>
 
