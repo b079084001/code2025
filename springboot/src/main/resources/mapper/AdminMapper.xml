@@ -4,6 +4,22 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.mapper.AdminMapper">
     <select id="selectAll" resultType="com.example.entity.Admin">
-        select * from `admin` order by id desc
+        select * from `admin`
+        <where>
+            <if test="username != null">username like concat('%',#{username},'%')</if>
+            <if test="name != null">and name like concat('%',#{name},'%')</if>
+        </where>
+        order by id desc
     </select>
+
+    <insert id="insert">
+        insert into `admin` (username,password,name,phone,email)
+        values(#{username},#{password},#{name},#{phone},#{email})
+    </insert>
+
+    <update id="updateById">
+        update `admin` set username = #{username},name = #{name},phone = #{phone},email = #{email}
+        where id = #{id}
+    </update>
+
 </mapper>

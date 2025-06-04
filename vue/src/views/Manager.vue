@@ -9,14 +9,16 @@
     </div>
 
     <div style="flex:1;border-bottom: 1px solid #ddd;display: flex;align-items: center;">
-      主页/数据分析
+      <span style="margin-right: 5px;cursor: pointer" @click="router.push('/manager/home')">主页</span> / <span
+        style="margin-left: 5px;">{{ router.currentRoute.value.meta.name }}</span>
     </div>
 
     <div style="width: fit-content;display: flex;align-items: center;padding-right: 20px;border-bottom: 1px solid #ddd">
       <el-dropdown>
         <div style="display: flex;align-items: center;">
-          <img style="width: 40px;height: 40px;"src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png" alt="">
-          <span style="margin-left: 5px" >Administrator</span>
+          <img style="width: 40px;height: 40px;"
+               src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png" alt="">
+          <span style="margin-left: 5px">Administrator</span>
         </div>
         <template #dropdown>
           <el-dropdown-menu>
@@ -34,17 +36,22 @@
   <div style="display: flex">
     <!--菜单区域开始-->
     <div style="width: 240px">
-      <el-menu router :default-openeds="['1']" :default-active="router.currentRoute.value.path" style="min-height: calc(100vh - 60px)">
+      <el-menu router :default-openeds="['1']" :default-active="router.currentRoute.value.path"
+               style="min-height: calc(100vh - 60px)">
         <el-menu-item index="/manager/home">
-          <el-icon><House /></el-icon>
-          <span>主页</span>
+          <el-icon>
+            <House/>
+          </el-icon>
+          <span>首页</span>
         </el-menu-item>
         <el-sub-menu index="1">
           <template #title>
-            <el-icon><location /></el-icon>
-            <span>数据管理</span>
+            <el-icon>
+              <location/>
+            </el-icon>
+            <span>用户管理</span>
           </template>
-          <el-menu-item index="/manager/about">关于</el-menu-item>
+          <el-menu-item index="/manager/admin">管理员信息</el-menu-item>
         </el-sub-menu>
       </el-menu>
     </div>
@@ -52,7 +59,7 @@
 
     <!--数据渲染区域开始-->
     <div style="flex: 1;width: 0;padding: 10px;background-color: #f2f4ff;">
-      <RouterView />
+      <RouterView/>
     </div>
     <!--数据渲染区域结束-->
   </div>
@@ -62,7 +69,6 @@
 
 
 <script setup>
-
 import router from "@/router/index.js";
 </script>
 
@@ -83,10 +89,11 @@ import router from "@/router/index.js";
   color: #ddd;
 }
 
-.el-menu .is-active{
+.el-menu .is-active {
   background-color: #537bee;
   color: #fff;
 }
+
 .el-sub-menu__title:hover {
   background-color: #3a456b;
 }
@@ -99,6 +106,7 @@ import router from "@/router/index.js";
 .el-dropdown {
   cursor: pointer;
 }
+
 .el-tooltip__trigger {
   outline: none;
 }
