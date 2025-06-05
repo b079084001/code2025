@@ -11,6 +11,26 @@ public class Admin {
     private String phone;
     private String email;
 
+    //非数据字段
+    private String ids;
+    private String[] idsArr;
+
+    public String getIds() {
+        return ids;
+    }
+
+    public void setIds(String ids) {
+        this.ids = ids;
+    }
+
+    public String[] getIdsArr() {
+        return idsArr;
+    }
+
+    public void setIdsArray(String[] idsArr) {
+        this.idsArr = idsArr;
+    }
+
     public Integer getId() {
         return id;
     }

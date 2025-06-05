@@ -47,8 +47,8 @@ public class AdminService {
         }
     }
 
-    public List<Admin> selectAll() {
-        return adminMapper.selectAll(null);
+    public List<Admin> selectAll(Admin admin) {
+        return adminMapper.selectAll(admin);
     }
 
     public PageInfo<Admin> selectPage(Integer pageNum, Integer pageSize, Admin admin) {

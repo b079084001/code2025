@@ -43,10 +43,17 @@
                 </exclusion>
             </exclusions>
         </dependency>
+        <!-- Java工具类 -->
         <dependency>
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-all</artifactId>
             <version>5.8.25</version>
+        </dependency>
+        <!-- 处理office文件的依赖 -->
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <version>5.4.0</version>
         </dependency>
     </dependencies>
 
