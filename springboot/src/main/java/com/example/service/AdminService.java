@@ -1,6 +1,7 @@
 package com.example.service;
 
 import cn.hutool.core.util.StrUtil;
+import com.example.entity.Account;
 import com.example.entity.Admin;
 import com.example.exception.CustomerException;
 import com.example.mapper.AdminMapper;
@@ -30,6 +31,7 @@ public class AdminService {
         if (StrUtil.isBlank(admin.getPassword())) {
             admin.setPassword("admin");
         }
+        admin.setRole("ADMIN");
         adminMapper.insert(admin);
     }
 
@@ -59,4 +61,18 @@ public class AdminService {
     }
 
 
+    public Admin login(Account account) {
+        //验证账号是否存在
+        Admin dbAdmin = adminMapper.selectByUsername(account.getUsername());
+        if (dbAdmin == null) {
+            throw new CustomerException("账号不存在");
+        }
+
+        //验证密码是否正确
+        if (!dbAdmin.getPassword().equals(account.getPassword())) {
+            throw new CustomerException("账号或密码错误");
+        }
+
+        return dbAdmin;
+    }
 }
