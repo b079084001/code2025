@@ -11,6 +11,7 @@ public class Admin extends Account {
     private String phone;
     private String email;
     private String role;
+    private String token;
 
     //非数据字段
     private String ids;
@@ -88,4 +89,13 @@ public class Admin extends Account {
         this.role = role;
     }
 
+    @Override
+    public String getToken() {
+        return token;
+    }
+
+    @Override
+    public void setToken(String token) {
+        this.token = token;
+    }
 }

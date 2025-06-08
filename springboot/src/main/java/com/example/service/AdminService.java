@@ -5,6 +5,7 @@ import com.example.entity.Account;
 import com.example.entity.Admin;
 import com.example.exception.CustomerException;
 import com.example.mapper.AdminMapper;
+import com.example.utils.TokenUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import jakarta.annotation.Resource;
@@ -49,11 +50,17 @@ public class AdminService {
         }
     }
 
+    public Admin selectById(String id) {
+        return adminMapper.selectById(id);
+    }
+
     public List<Admin> selectAll(Admin admin) {
         return adminMapper.selectAll(admin);
     }
 
     public PageInfo<Admin> selectPage(Integer pageNum, Integer pageSize, Admin admin) {
+//        Account currentUser = TokenUtils.getCurrentUser();
+
         //开启分页查询
         PageHelper.startPage(pageNum, pageSize);
         List<Admin> list = adminMapper.selectAll(admin);
@@ -73,6 +80,11 @@ public class AdminService {
             throw new CustomerException("账号或密码错误");
         }
 
+        //创建token并返回前端
+        String token = TokenUtils.createToken(dbAdmin.getId() + "-" + "ADMIN", dbAdmin.getPassword());
+        dbAdmin.setToken(token);
         return dbAdmin;
     }
+
+
 }

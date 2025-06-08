@@ -85,6 +85,7 @@ import request from "@/util/request.js";
 import {ElMessage, ElMessageBox} from "element-plus";
 
 const data = reactive({
+  user: JSON.parse(localStorage.getItem('code_user') || '{}'),
   username: '',
   name: '',
   pageNum: 1,
@@ -227,6 +228,7 @@ const exportData = () => {
   let url = `http://localhost:9090/admin/export?username=${data.username === null ? '' : data.username}`
       + `&name=${data.name === null ? '' : data.name}`
       + `&ids=${idsStr}`
+      + `&token=${data.user.token}`
   window.open(url)
 }
 

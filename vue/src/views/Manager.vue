@@ -83,9 +83,9 @@ const logout = () => {
   location.href = '/login'
 }
 
-if (!data.user.id) {
-  location.href = '/login'
-}
+// if (!data.user.id) {
+//   location.href = '/login'
+// }
 
 
 // let userStr = localStorage.getItem('code_user')

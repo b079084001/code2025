@@ -11,7 +11,7 @@ public class Account {
     private String phone;
     private String email;
     private String role;
-
+    private String token;
 
     public Integer getId() {
         return id;
@@ -69,4 +69,11 @@ public class Account {
         this.role = role;
     }
 
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
 }
