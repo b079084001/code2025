@@ -16,7 +16,8 @@
     <div style="width: fit-content;display: flex;align-items: center;padding-right: 20px;border-bottom: 1px solid #ddd">
       <el-dropdown>
         <div style="display: flex;align-items: center;">
-          <img style="width: 40px;height: 40px;"
+          <img v-if="data.user?.avatar" style="width: 40px;height: 40px;border-radius: 50%" :src="data.user?.avatar"/>
+          <img v-else style="width: 40px;height: 40px;"
                src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png" alt="">
           <span style="margin-left: 5px">{{ data.user?.name }}</span>
         </div>

@@ -28,6 +28,14 @@
       <el-table :data="data.tableData" style="width: 100%" @selection-change="handleCurrentChange"
                 :header-cell-style="{fontWeight:'bold',color:'#333',backgroundColor:'#eaf4ff'}">
         <el-table-column type="selection" width="55"/>
+        <el-table-column prop="avatar" label="头像" width="100">
+          <template #default="scope">
+<!--            <img v-if="scope.row.avatar" :src="scope.row.avatar"-->
+<!--                 style="width: 40px;height: 40px;border-radius: 50%;display: block">-->
+            <el-image v-if="scope.row.avatar" :src="scope.row.avatar" :preview-src-list="[scope.row.avatar]"
+                      :preview-teleported="true" style="width: 40px;height: 40px;border-radius: 50%;display: block"/>
+          </template>
+        </el-table-column>
         <el-table-column prop="username" label="账号"/>
         <el-table-column prop="name" label="名称"/>
         <el-table-column prop="phone" label="电话"/>
@@ -66,6 +74,16 @@
         </el-form-item>
         <el-form-item prop="email" label="邮箱">
           <el-input v-model="data.form.email" autocomplete="off"/>
+        </el-form-item>
+        <el-form-item prop="avatar" label="头像">
+          <el-upload
+              action="http://localhost:9090/files/upload"
+              :headers="{token: data.user.token}"
+              list-type="picture"
+              :on-success="handleFileSuccess"
+          >
+            <el-button type="primary">上传头像</el-button>
+          </el-upload>
         </el-form-item>
       </el-form>
       <template #footer>
@@ -241,5 +259,10 @@ const handleImportSuccess = (res) => {
     ElMessage.error(res.msg)
   }
 }
+
+const handleFileSuccess = (res) => {
+  data.form.avatar = res.data
+}
+
 
 </script>
