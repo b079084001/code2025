@@ -23,8 +23,8 @@
         </div>
         <template #dropdown>
           <el-dropdown-menu>
-            <el-dropdown-item>个人信息</el-dropdown-item>
-            <el-dropdown-item>修改密码</el-dropdown-item>
+            <el-dropdown-item @click="router.push('/manager/person')">个人信息</el-dropdown-item>
+            <el-dropdown-item @click="router.push('/manager/updatePassword')">修改密码</el-dropdown-item>
             <el-dropdown-item @click="logout">退出登录</el-dropdown-item>
           </el-dropdown-menu>
         </template>
@@ -62,7 +62,7 @@
 
     <!--数据渲染区域开始-->
     <div style="flex: 1;width: 0;padding: 10px;background-color: #f2f4ff;">
-      <RouterView/>
+      <RouterView @updateUser="updateUser"/>
     </div>
     <!--数据渲染区域结束-->
   </div>
@@ -82,6 +82,10 @@ const data = reactive({
 const logout = () => {
   localStorage.removeItem("code_user")
   location.href = '/login'
+}
+
+const updateUser = () => {
+  data.user = JSON.parse(localStorage.getItem('code_user') || '{}')
 }
 
 // if (!data.user.id) {

@@ -87,4 +87,20 @@ public class AdminService {
     }
 
 
+    public void updatePassword(Account account) {
+        //先判断新密码和确认密码是否一致
+        if (!account.getNewPassword().equals(account.getNew2Password())) {
+            throw new CustomerException("500", "两次输入的密码不一致");
+        }
+        //校验原密码是否正确
+        Account currentUser = TokenUtils.getCurrentUser();
+        if (!account.getPassword().equals(currentUser.getPassword())) {
+            throw new CustomerException("500", "原密码输入错误");
+        }
+
+        //更新密码
+        Admin admin = adminMapper.selectById(currentUser.getId().toString());
+        admin.setPassword(account.getNewPassword());
+        adminMapper.updateById(admin);
+    }
 }

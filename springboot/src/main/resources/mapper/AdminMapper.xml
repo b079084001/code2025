@@ -22,7 +22,7 @@
     </insert>
 
     <update id="updateById">
-        update `admin` set username = #{username},name = #{name},phone = #{phone},email = #{email},role = #{role},avatar = #{avatar}
+        update `admin` set username = #{username},password = #{password},name = #{name},phone = #{phone},email = #{email},role = #{role},avatar = #{avatar}
         where id = #{id}
     </update>
 

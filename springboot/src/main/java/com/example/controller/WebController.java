@@ -2,7 +2,6 @@ package com.example.controller;
 
 import com.example.common.Result;
 import com.example.entity.Account;
-import com.example.entity.Admin;
 import com.example.entity.User;
 import com.example.exception.CustomerException;
 import com.example.service.AdminService;
@@ -38,6 +37,17 @@ public class WebController {
     @PostMapping("/register")
     public Result register(@RequestBody User user) {
         userService.register(user);
+        return Result.success();
+    }
+
+    @PostMapping("/updatePassword")
+    public Result updatePassword(@RequestBody Account account) {
+        if("ADMIN".equals(account.getRole())) {
+            adminService.updatePassword(account);
+        }
+        if("USER".equals(account.getRole())) {
+            userService.updatePassword(account);
+        }
         return Result.success();
     }
 }

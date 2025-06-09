@@ -13,6 +13,7 @@ public class Admin extends Account {
     private String role;
     private String token;
     private String avatar;
+
     //非数据字段
     private String ids;
     private String[] idsArr;
@@ -106,4 +107,5 @@ public class Admin extends Account {
     public void setAvatar(String avatar) {
         this.avatar = avatar;
     }
+
 }

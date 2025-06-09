@@ -107,4 +107,5 @@ public class User extends Account {
     public void setAvatar(String avatar) {
         this.avatar = avatar;
     }
+
 }
