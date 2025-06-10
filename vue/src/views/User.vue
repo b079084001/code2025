@@ -160,7 +160,7 @@ const add = () => {
   //formRef是表单的引用
   formRef.value.validate((valid) => {
     if (valid) {  //验证通过
-      request.post("/user/add", data.form).then(res => {
+      request.post('/user/add', data.form).then(res => {
         if (res.code === '200') {
           data.formVisible = false
           ElMessage.success('新增成功')
@@ -183,7 +183,7 @@ const update = () => {
   //formRef是表单的引用
   formRef.value.validate((valid) => {
     if (valid) {  //验证通过
-      request.put("/user/update", data.form).then(res => {
+      request.put('/user/update', data.form).then(res => {
         if (res.code === '200') {
           data.formVisible = false
           ElMessage.success('修改成功')
@@ -203,7 +203,7 @@ const save = () => {
 
 const del = (id) => {
   ElMessageBox.confirm('删除后无法恢复，您确认删除吗？', '删除确认', {type: 'warning'}).then(res => {
-    request.delete("admin/delete/" + id).then(res => {
+    request.delete('/user/delete/' + id).then(res => {
       if (res.code === '200') {
         data.formVisible = false
         ElMessage.success('删除成功')
@@ -224,11 +224,11 @@ const handleCurrentChange = (rows) => { //实际选择的数组
 
 const deleteBatch = () => {
   if (data.rows.length === 0) {
-    ElMessage.warning("请选择数据")
+    ElMessage.warning('请选择数据')
     return
   }
   ElMessageBox.confirm('删除后无法恢复，您确认删除吗？', '删除确认', {type: 'warning'}).then(res => {
-    request.delete("admin/deleteBatch", {data: data.rows}).then(res => {
+    request.delete('/user/deleteBatch', {data: data.rows}).then(res => {
       if (res.code === '200') {
         data.formVisible = false
         ElMessage.success('批量删除成功')
@@ -253,7 +253,7 @@ const exportData = () => {
 
 const handleImportSuccess = (res) => {
   if (res.code === '200') {
-    ElMessage.success("批量导入成功")
+    ElMessage.success('批量导入成功')
     load()
   } else {
     ElMessage.error(res.msg)

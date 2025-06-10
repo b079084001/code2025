@@ -38,7 +38,7 @@
   <div style="display: flex">
     <!--菜单区域开始-->
     <div style="width: 240px">
-      <el-menu router :default-openeds="['1']" :default-active="router.currentRoute.value.path"
+      <el-menu router :default-openeds="['1','2']" :default-active="router.currentRoute.value.path"
                style="min-height: calc(100vh - 60px)">
         <el-menu-item index="/manager/home">
           <el-icon>
@@ -49,7 +49,16 @@
         <el-sub-menu index="1">
           <template #title>
             <el-icon>
-              <location/>
+              <monitor />
+            </el-icon>
+            <span>信息管理</span>
+          </template>
+          <el-menu-item index="/manager/notice">系统公告</el-menu-item>
+        </el-sub-menu>
+        <el-sub-menu index="2">
+          <template #title>
+            <el-icon>
+              <User/>
             </el-icon>
             <span>用户管理</span>
           </template>
