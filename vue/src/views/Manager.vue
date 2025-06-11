@@ -54,6 +54,7 @@
             <span>信息管理</span>
           </template>
           <el-menu-item index="/manager/notice">系统公告</el-menu-item>
+          <el-menu-item index="/manager/introduction">旅游攻略</el-menu-item>
         </el-sub-menu>
         <el-sub-menu index="2">
           <template #title>

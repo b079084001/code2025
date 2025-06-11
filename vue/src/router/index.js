@@ -13,6 +13,7 @@ const router = createRouter({
                 {path: 'person', meta: {name: '个人信息'}, component: () => import('../views/Person.vue'),},
                 {path: 'updatePassword', meta: {name: '修改密码'}, component: () => import('../views/UpdatePassword.vue'),},
                 {path: 'notice', meta: {name: '系统公告'}, component: () => import('../views/Notice.vue'),},
+                {path: 'introduction', meta: {name: '旅游攻略'}, component: () => import('../views/Introduction.vue'),},
             ]
         },
         {path: '/login', component:() => import('../views/Login.vue'),},

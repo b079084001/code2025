@@ -1,5 +1,5 @@
 <template>
-  <div class="card" style="margin-bottom: 5px">系统公告</div>
+  <div class="card" style="margin-bottom: 5px">旅游攻略</div>
   <div class="card" style="margin-bottom: 5px">
     <el-input clearable @clear="load" style="width: 260px;margin-right: 5px" v-model="data.title"
               placeholder="请输入标题查询"
@@ -15,8 +15,18 @@
   <div class="card" style="margin-bottom: 5px">
     <el-table :data="data.tableData" style="width: 100%"
               :header-cell-style="{fontWeight:'bold',color:'#333',backgroundColor:'#eaf4ff'}">
-      <el-table-column prop="title" label="公告标题"/>
-      <el-table-column prop="content" label="公告内容"/>
+      <el-table-column prop="img" label="攻略主图" width="100">
+        <template #default="scope">
+          <el-image v-if="scope.row.img" :src="scope.row.img" :preview-src-list="[scope.row.img]"
+                    :preview-teleported="true" style="width: 50px;height: 50px;border-radius: 5px;display: block"/>
+        </template>
+      </el-table-column>
+      <el-table-column prop="title" label="攻略标题"/>
+      <el-table-column prop="content" label="攻略内容">
+        <template v-slot="scope">
+          <el-button type="primary" @click="viewContent(scope.row.content)">点击查看</el-button>
+        </template>
+      </el-table-column>
       <el-table-column prop="time" label="发布时间"/>
       <el-table-column label="操作" width="100">
         <template #default="scope">
@@ -39,14 +49,38 @@
     />
   </div>
 
-  <el-dialog v-model="data.formVisible" title="公告信息" width="500" destroy-on-close>
+  <el-dialog v-model="data.formVisible" title="攻略信息" width="60%" destroy-on-close>
     <el-form ref="formRef" :model="data.form" :rules="data.rules" label-width="80px" padding="20px 30px 10px 0">
-      <el-form-item prop="title" label="公告标题">
-        <el-input v-model="data.form.title" autocomplete="off" placeholder="请填写公告标题"/>
+      <el-form-item prop="img" label="攻略主图">
+        <el-upload
+            action="http://localhost:9090/files/upload"
+            :headers="{token: data.user.token}"
+            list-type="picture"
+            :on-success="handleFileSuccess"
+        >
+          <el-button type="primary">上传图片</el-button>
+        </el-upload>
       </el-form-item>
-      <el-form-item prop="content" label="公告内容">
-        <el-input type="textarea" :rows="3" v-model="data.form.content" autocomplete="off"
-                  placeholder="请填写公告内容"/>
+      <el-form-item prop="title" label="攻略标题">
+        <el-input v-model="data.form.title" autocomplete="off" placeholder="请填写攻略标题"/>
+      </el-form-item>
+      <el-form-item prop="content" label="攻略详情">
+        <el-form-item>
+          <div style="border: 1px solid #ccc;width: 100%">
+            <Toolbar
+                style="border-bottom: 1px solid #ccc"
+                :editor="editorRef"
+                :mode="mode"
+            />
+            <Editor
+                style="height: 500px;overflow-y: hidden;"
+                v-model="data.form.content"
+                :mode="mode"
+                :defaultConfig="editorConfig"
+                @onCreated="handleCreated"
+            />
+          </div>
+        </el-form-item>
       </el-form-item>
     </el-form>
     <template #footer>
@@ -57,15 +91,23 @@
     </template>
   </el-dialog>
 
+  <el-dialog v-model="data.viewVisible" title="攻略详情" width="60%" destroy-on-close>
+    <div v-html="data.content" style="padding: 0 20px"></div>
+  </el-dialog>
+
 </template>
 
 <script setup>
 import {Search} from "@element-plus/icons-vue";
-import {reactive, ref} from "vue";
+import {onBeforeUnmount, reactive, ref, shallowRef} from 'vue'
+import '@wangeditor/editor/dist/css/style.css' //引入css
+import {Editor, Toolbar} from '@wangeditor/editor-for-vue'
+
 import request from "@/util/request.js";
 import {ElMessage, ElMessageBox} from "element-plus";
 
 const formRef = ref()
+
 const data = reactive({
   user: JSON.parse(localStorage.getItem('code_user') || '{}'),
   title: null,
@@ -75,13 +117,39 @@ const data = reactive({
   tableData: [],
   formVisible: false,
   rules: {
-    title: [{required: true, message: '请填写公告标题', trigger: 'blur'}],
-    content: [{required: true, message: '请填写公告内容', trigger: 'blur'}],
-  }
+    title: [{required: true, message: '请填写攻略标题', trigger: 'blur'}],
+    content: [{required: true, message: '请填写攻略内容', trigger: 'blur'}],
+  },
+  content: null,
+  viewVisible: false
 })
 
+/* wangEditor5初始化开始 */
+const editorRef = shallowRef()  //编辑器实例，必须用shallowRef
+const mode = 'default'
+const editorConfig = {MENU_CONF: {}}
+//图片上传配置
+editorConfig.MENU_CONF['uploadImage'] = {
+  headers: {
+    token: data.user.token
+  },
+  server: "http://localhost:9090/files/wang/upload", //服务器段图片上传接口
+  fieldName: 'file'
+}
+//组件销毁时，也及时销毁编辑器，否则可能会造成内存泄露
+onBeforeUnmount(() => {
+  const editor = editorRef.value
+  if (editor == null) return
+  editor.destroy()
+})
+//记录editor实例
+const handleCreated = (editor) => {
+  editorRef.value = editor
+}
+/* wangEditor5初始化结束 */
+
 const load = () => {
-  request.get('/notice/selectPage', {
+  request.get('/introduction/selectPage', {
     params: {
       pageNum: data.pageNum,
       pageSize: data.pageSize,
@@ -109,14 +177,17 @@ const handleAdd = () => {
   data.form = {}
 }
 
+const handleFileSuccess = (res) => {
+  data.form.img = res.data
+}
+
 const handleEdit = (row) => {
   data.form = JSON.parse(JSON.stringify(row)) //深度拷贝：先转字符串，在转json
   data.formVisible = true
 }
 
-
 const add = () => {
-  request.post('/notice/add', data.form).then(res => {
+  request.post('/introduction/add', data.form).then(res => {
     if (res.code === '200') {
       ElMessage.success('新增成功')
       data.formVisible = false
@@ -131,7 +202,7 @@ const update = () => {
   //formRef是表单的引用
   formRef.value.validate((valid) => {
     if (valid) {  //验证通过
-      request.put("/notice/update", data.form).then(res => {
+      request.put("/introduction/update", data.form).then(res => {
         if (res.code === '200') {
           data.formVisible = false
           ElMessage.success('更新成功')
@@ -154,7 +225,7 @@ const save = () => {
 
 const del = (id) => {
   ElMessageBox.confirm('删除后无法恢复，您确认删除吗？', '删除确认', {type: 'warning'}).then(res => {
-    request.delete("/notice/delete/" + id).then(res => {
+    request.delete("/introduction/delete/" + id).then(res => {
       if (res.code === '200') {
         data.formVisible = false
         ElMessage.success('删除成功')
@@ -165,5 +236,10 @@ const del = (id) => {
     })
   }).catch(err => {
   })
+}
+
+const viewContent = (content) => {
+  data.viewVisible = true
+  data.content = content
 }
 </script>

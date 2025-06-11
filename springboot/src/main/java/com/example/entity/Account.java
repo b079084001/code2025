@@ -1,7 +1,7 @@
 package com.example.entity;
 
 /**
- * 管理员信息
+ * 账号信息
  */
 public class Account {
     private Integer id;
