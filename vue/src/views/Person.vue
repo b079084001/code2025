@@ -48,6 +48,7 @@ const handleFileSuccess = (res) => {
 const emit = defineEmits(['updateUser'])
 
 const update = () => {
+
   let url
   if (data.user.role === 'ADMIN') {
     url = '/admin/update'
@@ -57,6 +58,7 @@ const update = () => {
   }
 
   request.put(url, data.user).then(res => {
+
     if (res.code === '200') {
       ElMessage.success('更新成功')
       localStorage.setItem('code_user', JSON.stringify(data.user))

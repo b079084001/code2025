@@ -8,7 +8,7 @@
     <el-button type="info" @click="reset">重置</el-button>
   </div>
 
-  <div class="card" style="margin-bottom: 5px">
+  <div class="card" style="margin-bottom: 5px" v-if="data.user.role==='USER'">
     <el-button type="primary" @click="handleAdd">新 增</el-button>
   </div>
 
@@ -22,6 +22,8 @@
         </template>
       </el-table-column>
       <el-table-column prop="title" label="攻略标题"/>
+      <el-table-column prop="categoryTitle" label="攻略分类"/>
+      <el-table-column prop="userName" label="发布用户"/>
       <el-table-column prop="content" label="攻略内容">
         <template v-slot="scope">
           <el-button type="primary" @click="viewContent(scope.row.content)">点击查看</el-button>
@@ -64,6 +66,20 @@
       <el-form-item prop="title" label="攻略标题">
         <el-input v-model="data.form.title" autocomplete="off" placeholder="请填写攻略标题"/>
       </el-form-item>
+      <el-form-item prop="categoryId" label="攻略分类">
+        <el-select
+            v-model="data.form.categoryId"
+            placeholder="请选择攻略分类"
+            style="width: 100%"
+        >
+          <el-option
+              v-for="item in data.categoryData"
+              :key="item.id"
+              :label="item.title"
+              :value="item.id"
+          />
+        </el-select>
+      </el-form-item>
       <el-form-item prop="content" label="攻略详情">
         <el-form-item>
           <div style="border: 1px solid #ccc;width: 100%">
@@ -99,7 +115,7 @@
 
 <script setup>
 import {Search} from "@element-plus/icons-vue";
-import {onBeforeUnmount, reactive, ref, shallowRef} from 'vue'
+import {defineEmits, onBeforeUnmount, reactive, ref, shallowRef} from 'vue'
 import '@wangeditor/editor/dist/css/style.css' //引入css
 import {Editor, Toolbar} from '@wangeditor/editor-for-vue'
 
@@ -115,13 +131,15 @@ const data = reactive({
   pageSize: 5,
   total: 0,
   tableData: [],
+  form: {},
   formVisible: false,
   rules: {
     title: [{required: true, message: '请填写攻略标题', trigger: 'blur'}],
     content: [{required: true, message: '请填写攻略内容', trigger: 'blur'}],
   },
   content: null,
-  viewVisible: false
+  viewVisible: false,
+  categoryData: []
 })
 
 /* wangEditor5初始化开始 */
@@ -147,6 +165,8 @@ const handleCreated = (editor) => {
   editorRef.value = editor
 }
 /* wangEditor5初始化结束 */
+
+const emit = defineEmits(['updateUser'])
 
 const load = () => {
   request.get('/introduction/selectPage', {
@@ -242,4 +262,16 @@ const viewContent = (content) => {
   data.viewVisible = true
   data.content = content
 }
+
+const loadCategory = () => {
+  request.get('/category/selectAll').then(res => {
+    if (res.code === '200') {
+      data.categoryData = res.data
+    } else {
+      ElMessage.error(res.msg)
+    }
+  })
+}
+
+loadCategory()
 </script>

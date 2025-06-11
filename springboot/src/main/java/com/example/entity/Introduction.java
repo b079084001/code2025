@@ -9,6 +9,13 @@ public class Introduction {
     private String title;
     private String content;
     private String time;
+    private Integer categoryId;
+    private Integer userId;
+
+    //不是数据库里的字段，是用来存储数据库里category_id关联category表查出来的title字段
+    private String categoryTitle;
+    //不是数据库里的字段，是用来存储数据库里user_id关联user表查出来的name字段
+    private String userName;
 
     public Integer getId() {
         return id;
@@ -48,5 +55,37 @@ public class Introduction {
 
     public void setTime(String time) {
         this.time = time;
+    }
+
+    public Integer getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(Integer categoryId) {
+        this.categoryId = categoryId;
+    }
+
+    public String getCategoryTitle() {
+        return categoryTitle;
+    }
+
+    public void setCategoryTitle(String categoryTitle) {
+        this.categoryTitle = categoryTitle;
+    }
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 }

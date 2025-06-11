@@ -1,5 +1,5 @@
 <template>
-  <div class="card" style="margin-bottom: 5px">系统公告</div>
+  <div class="card" style="margin-bottom: 5px">攻略分类</div>
   <div class="card" style="margin-bottom: 5px">
     <el-input clearable @clear="load" style="width: 260px;margin-right: 5px" v-model="data.title"
               placeholder="请输入标题查询"
@@ -15,9 +15,7 @@
   <div class="card" style="margin-bottom: 5px">
     <el-table :data="data.tableData" style="width: 100%"
               :header-cell-style="{fontWeight:'bold',color:'#333',backgroundColor:'#eaf4ff'}">
-      <el-table-column prop="title" label="公告标题"/>
-      <el-table-column prop="content" label="公告内容"/>
-      <el-table-column prop="time" label="发布时间"/>
+      <el-table-column prop="title" label="分类标题"/>
       <el-table-column label="操作" width="100">
         <template #default="scope">
           <el-button type="primary" icon="Edit" circle @click="handleEdit(scope.row)"></el-button>
@@ -39,14 +37,10 @@
     />
   </div>
 
-  <el-dialog v-model="data.formVisible" title="公告信息" width="500" destroy-on-close>
+  <el-dialog v-model="data.formVisible" title="分类信息" width="500" destroy-on-close>
     <el-form ref="formRef" :model="data.form" :rules="data.rules" label-width="80px" padding="20px 30px 10px 0">
-      <el-form-item prop="title" label="公告标题">
-        <el-input v-model="data.form.title" autocomplete="off" placeholder="请填写公告标题"/>
-      </el-form-item>
-      <el-form-item prop="content" label="公告内容">
-        <el-input type="textarea" :rows="3" v-model="data.form.content" autocomplete="off"
-                  placeholder="请填写公告内容"/>
+      <el-form-item prop="title" label="分类标题">
+        <el-input v-model="data.form.title" autocomplete="off" placeholder="请填写分类标题"/>
       </el-form-item>
     </el-form>
     <template #footer>
@@ -64,6 +58,7 @@ import {Search} from "@element-plus/icons-vue";
 import {defineEmits, reactive, ref} from "vue";
 import request from "@/util/request.js";
 import {ElMessage, ElMessageBox} from "element-plus";
+
 const emit = defineEmits(['updateUser'])
 const formRef = ref()
 const data = reactive({
@@ -75,13 +70,12 @@ const data = reactive({
   tableData: [],
   formVisible: false,
   rules: {
-    title: [{required: true, message: '请填写公告标题', trigger: 'blur'}],
-    content: [{required: true, message: '请填写公告内容', trigger: 'blur'}],
+    title: [{required: true, message: '请填写分类标题', trigger: 'blur'}],
   }
 })
 
 const load = () => {
-  request.get('/notice/selectPage', {
+  request.get('/category/selectPage', {
     params: {
       pageNum: data.pageNum,
       pageSize: data.pageSize,
@@ -116,7 +110,7 @@ const handleEdit = (row) => {
 
 
 const add = () => {
-  request.post('/notice/add', data.form).then(res => {
+  request.post('/category/add', data.form).then(res => {
     if (res.code === '200') {
       ElMessage.success('新增成功')
       data.formVisible = false
@@ -131,7 +125,7 @@ const update = () => {
   //formRef是表单的引用
   formRef.value.validate((valid) => {
     if (valid) {  //验证通过
-      request.put("/notice/update", data.form).then(res => {
+      request.put("/category/update", data.form).then(res => {
         if (res.code === '200') {
           data.formVisible = false
           ElMessage.success('更新成功')
@@ -154,7 +148,7 @@ const save = () => {
 
 const del = (id) => {
   ElMessageBox.confirm('删除后无法恢复，您确认删除吗？', '删除确认', {type: 'warning'}).then(res => {
-    request.delete("/notice/delete/" + id).then(res => {
+    request.delete("/category/delete/" + id).then(res => {
       if (res.code === '200') {
         data.formVisible = false
         ElMessage.success('删除成功')
