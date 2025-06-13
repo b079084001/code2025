@@ -40,9 +40,9 @@ request.interceptors.response.use(
         return res;
     },
     error => {
-        if (error.response.status === 404) {
+        if (error.response.status === '404') {
             ElMessage.error("未找到请求接口")
-        } else if (error.response.status === 5000) {
+        } else if (error.response.status === '5000') {
             ElMessage.error("系统异常，请查看后端控制台报错")
         } else {
             console.log('err' + error)
