@@ -1,5 +1,5 @@
 <template>
-  <div class="card" style="margin-bottom: 5px">攻略分类</div>
+  <div class="card" style="margin-bottom: 5px">请假申请</div>
   <div class="card" style="margin-bottom: 5px">
     <el-input clearable @clear="load" style="width: 260px;margin-right: 5px" v-model="data.title"
               placeholder="请输入标题查询"
@@ -8,18 +8,32 @@
     <el-button type="info" @click="reset">重置</el-button>
   </div>
 
-  <div class="card" style="margin-bottom: 5px">
-    <el-button type="primary" @click="handleAdd">新 增</el-button>
+  <div class="card" style="margin-bottom: 5px" v-if="data.user.role==='USER'">
+    <el-button type="primary" @click="handleAdd">提交请假申请</el-button>
   </div>
 
   <div class="card" style="margin-bottom: 5px">
     <el-table :data="data.tableData" style="width: 100%"
               :header-cell-style="{fontWeight:'bold',color:'#333',backgroundColor:'#eaf4ff'}">
-      <el-table-column prop="title" label="分类标题"/>
+      <el-table-column prop="title" label="请假标题"/>
+      <el-table-column prop="content" label="请假说明"/>
+      <el-table-column prop="userName" label="请假人"/>
+      <el-table-column prop="time" label="提交时间"/>
+      <el-table-column prop="status" label="审核状态">
+        <template v-slot="scope">
+        <el-tag type="warning" v-if="scope.row.status==='待审核'">{{scope.row.status}}</el-tag>
+        <el-tag type="success" v-if="scope.row.status==='审核通过'">{{scope.row.status}}</el-tag>
+        <el-tag type="danger" v-if="scope.row.status==='审核拒绝'">{{scope.row.status}}</el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column prop="reason" label="审核说明"/>
       <el-table-column label="操作" width="100">
-        <template #default="scope">
-          <el-button type="primary" icon="Edit" circle @click="handleEdit(scope.row)"></el-button>
-          <el-button type="danger" icon="Delete" circle @click="del(scope.row.id)"></el-button>
+        <template #default="scope" v-if="data.user.role==='USER'">
+          <el-button :disabled="scope.row.status!='待审核'" type="primary" icon="Edit" circle @click="handleEdit(scope.row)"></el-button>
+          <el-button :disabled="scope.row.status!='待审核'" type="danger" icon="Delete" circle @click="del(scope.row.id)"></el-button>
+        </template>
+        <template #default="scope" v-if="data.user.role==='ADMIN'">
+          <el-button :disabled="scope.row.status!=='待审核'" type="primary" @click="handleEdit(scope.row)">审核</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -37,10 +51,23 @@
     />
   </div>
 
-  <el-dialog v-model="data.formVisible" title="分类信息" width="500" destroy-on-close>
+  <el-dialog v-model="data.formVisible" title="请假信息" width="500" destroy-on-close>
     <el-form ref="formRef" :model="data.form" :rules="data.rules" label-width="80px" padding="20px 30px 10px 0">
-      <el-form-item prop="title" label="分类标题">
-        <el-input v-model="data.form.title" autocomplete="off" placeholder="请填写分类标题"/>
+      <el-form-item prop="title" label="请假标题" v-if="data.user.role==='USER'">
+        <el-input v-model="data.form.title" autocomplete="off" placeholder="请填写请假标题"/>
+      </el-form-item>
+      <el-form-item prop="content" label="请假说明" v-if="data.user.role==='USER'">
+        <el-input type="textarea" rows="3" v-model="data.form.content" autocomplete="off" placeholder="请填写请假说明"/>
+      </el-form-item>
+      <el-form-item prop="status" label="审核状态" v-if="data.user.role==='ADMIN'">
+        <el-radio-group v-model="data.form.status">
+          <el-radio-button label="待审核" value="待审核"/>
+          <el-radio-button label="审核通过" value="审核通过"/>
+          <el-radio-button label="审核拒绝" value="审核拒绝"/>
+        </el-radio-group>
+      </el-form-item>
+      <el-form-item prop="reason" label="审核说明" v-if="data.user.role==='ADMIN' && data.form.status==='审核拒绝'">
+        <el-input type="textarea" rows="3" v-model="data.form.reason" autocomplete="off" placeholder="请填写审核说明"/>
       </el-form-item>
     </el-form>
     <template #footer>
@@ -50,17 +77,16 @@
       </div>
     </template>
   </el-dialog>
-
 </template>
 
 <script setup>
 import {Search} from "@element-plus/icons-vue";
-import {defineEmits, reactive, ref} from "vue";
+import {reactive, ref} from "vue";
 import request from "@/util/request.js";
 import {ElMessage, ElMessageBox} from "element-plus";
 
-const emit = defineEmits(['updateUser'])
 const formRef = ref()
+
 const data = reactive({
   user: JSON.parse(localStorage.getItem('code_user') || '{}'),
   title: null,
@@ -69,13 +95,15 @@ const data = reactive({
   total: 0,
   tableData: [],
   formVisible: false,
+  form: {},
   rules: {
-    title: [{required: true, message: '请填写分类标题', trigger: 'blur'}],
+    title: [{required: true, message: '请填写请假标题', trigger: 'blur'}],
+    content: [{required: true, message: '请填写请假内容', trigger: 'blur'}],
   }
 })
 
 const load = () => {
-  request.get('/category/selectPage', {
+  request.get('/apply/selectPage', {
     params: {
       pageNum: data.pageNum,
       pageSize: data.pageSize,
@@ -99,8 +127,10 @@ const reset = () => {
 }
 
 const handleAdd = () => {
-  data.formVisible = true
   data.form = {}
+  // data.form.status = '待审核'
+  // data.form.userId = data.user.id
+  data.formVisible = true
 }
 
 const handleEdit = (row) => {
@@ -109,9 +139,9 @@ const handleEdit = (row) => {
 }
 
 const add = () => {
-  request.post('/category/add', data.form).then(res => {
+  request.post('/apply/add', data.form).then(res => {
     if (res.code === '200') {
-      ElMessage.success('新增成功')
+      ElMessage.success('提交成功，等待管理员审核')
       data.formVisible = false
       load()
     } else {
@@ -124,7 +154,7 @@ const update = () => {
   //formRef是表单的引用
   formRef.value.validate((valid) => {
     if (valid) {  //验证通过
-      request.put("/category/update", data.form).then(res => {
+      request.put("/apply/update", data.form).then(res => {
         if (res.code === '200') {
           data.formVisible = false
           ElMessage.success('更新成功')
@@ -147,7 +177,7 @@ const save = () => {
 
 const del = (id) => {
   ElMessageBox.confirm('删除后无法恢复，您确认删除吗？', '删除确认', {type: 'warning'}).then(res => {
-    request.delete("/category/delete/" + id).then(res => {
+    request.delete("/apply/delete/" + id).then(res => {
       if (res.code === '200') {
         data.formVisible = false
         ElMessage.success('删除成功')
