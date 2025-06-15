@@ -16,6 +16,8 @@ const router = createRouter({
                 {path: 'introduction', meta: {name: '旅游攻略'}, component: () => import('../views/Introduction.vue'),},
                 {path: 'category', meta: {name: '攻略分类'}, component: () => import('../views/Category.vue'),},
                 {path: 'apply', meta: {name: '请假申请'}, component: () => import('../views/Apply.vue'),},
+                {path: 'book', meta: {name: '图书信息'}, component: () => import('../views/Book.vue'),},
+                {path: 'record', meta: {name: '借阅信息'}, component: () => import('../views/Record.vue'),},
             ]
         },
         {path: '/login', component:() => import('../views/Login.vue'),},
