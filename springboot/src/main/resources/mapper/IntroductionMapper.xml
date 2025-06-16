@@ -4,7 +4,7 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.mapper.IntroductionMapper">
     <select id="selectAll" resultType="com.example.entity.Introduction">
-        select introduction.*,category.title as categoryTitle,user.name as userName
+        select introduction.*,category.title as categoryTitle,user.name as userName,user.avatar as userAvatar
         from `introduction`
         left join category on introduction.category_id=category.id
         left join user on introduction.user_id=user.id

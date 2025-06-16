@@ -16,6 +16,8 @@ public class Introduction {
     private String categoryTitle;
     //不是数据库里的字段，是用来存储数据库里user_id关联user表查出来的name字段
     private String userName;
+    private String userAvatar;
+    private String description;
 
     public Integer getId() {
         return id;
@@ -87,5 +89,21 @@ public class Introduction {
 
     public void setUserName(String userName) {
         this.userName = userName;
+    }
+
+    public String getUserAvatar() {
+        return userAvatar;
+    }
+
+    public void setUserAvatar(String userAvatar) {
+        this.userAvatar = userAvatar;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

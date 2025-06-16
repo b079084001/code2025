@@ -2,6 +2,7 @@ package com.example.service;
 
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.http.HtmlUtil;
 import com.example.entity.Account;
 import com.example.entity.Category;
 import com.example.entity.Introduction;
@@ -44,7 +45,12 @@ public class IntroductionService {
     }
 
     public List<Introduction> selectAll(Introduction introduction) {
-        return introductionMapper.selectAll(introduction);
+//        return introductionMapper.selectAll(introduction);
+        List<Introduction> introductions = introductionMapper.selectAll(introduction);
+        for (Introduction dbintroduction : introductions) {
+            dbintroduction.setDescription(HtmlUtil.cleanHtmlTag(dbintroduction.getContent()));
+        }
+        return introductions;
     }
 
     public PageInfo<Introduction> selectPage(Integer pageNum, Integer pageSize, Introduction introduction) {
