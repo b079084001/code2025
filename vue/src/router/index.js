@@ -21,6 +21,7 @@ const router = createRouter({
             ]
         },
         {path: '/front/home', component:() => import('../views/Front.vue'),},
+        {path: '/front/introductionDetail', component:() => import('../views/IntroductionDetail.vue'),},
         {path: '/login', component:() => import('../views/Login.vue'),},
         {path: '/register', component:() => import('../views/Register.vue'),},
         {path: '/NotFound', component: () =>import('../views/404.vue'),},

@@ -85,4 +85,26 @@ public class IntroductionService {
 //        }
         return PageInfo.of(list);
     }
+
+    public Introduction selectById(Integer id) {
+        Introduction dbIntroduction = introductionMapper.selectById(id);
+        // 先拿到categoryId
+        Integer categoryId = dbIntroduction.getCategoryId();
+        //先拿到userId
+        Integer userId = dbIntroduction.getUserId();
+        //通过categoryId从category表里通过主键查询分类数据
+        Category category = categoryMapper.selectById(categoryId);
+        //通过userId从user表里通过主键查询分类数据
+        User user = userMapper.selectById(userId.toString());
+        if (ObjectUtil.isNotEmpty(category)) {
+            //把category表的title传给categoryTitle
+            dbIntroduction.setCategoryTitle(category.getTitle());
+        }
+        if (ObjectUtil.isNotEmpty(user)) {
+            //把user表的name传给userName
+            dbIntroduction.setUserName(user.getName());
+            dbIntroduction.setUserAvatar(user.getAvatar());
+        }
+        return dbIntroduction;
+    }
 }

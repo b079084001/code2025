@@ -46,4 +46,13 @@ public class IntroductionController {
         PageInfo<Introduction> lst = introductionService.selectPage(pageNum, pageSize, introduction);
         return Result.success(lst); //返回分页对象
     }
+
+    /**
+     * 根据id查询
+     */
+    @GetMapping("/selectById/{id}")
+    public Result selectById(@PathVariable Integer id) {
+        Introduction introduction = introductionService.selectById(id);
+        return Result.success(introduction);
+    }
 }

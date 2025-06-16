@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50744
 File Encoding         : 65001
 
-Date: 2025-06-12 00:13:32
+Date: 2025-06-16 23:06:54
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -31,6 +31,35 @@ CREATE TABLE `admin` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `username_index` (`name`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='管理员信息';
+
+-- ----------------------------
+-- Table structure for `apply`
+-- ----------------------------
+DROP TABLE IF EXISTS `apply`;
+CREATE TABLE `apply` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `user_id` int(11) DEFAULT NULL COMMENT '用户ID',
+  `title` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '请假标题',
+  `content` text COLLATE utf8mb4_unicode_ci COMMENT '请假说明',
+  `time` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '提交时间',
+  `status` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '审核状态',
+  `reason` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '审核说明',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='请假信息表';
+
+-- ----------------------------
+-- Table structure for `book`
+-- ----------------------------
+DROP TABLE IF EXISTS `book`;
+CREATE TABLE `book` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `img` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '图书封面',
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '图书名字',
+  `price` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '图书价格',
+  `author` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '图书作者',
+  `num` int(11) DEFAULT NULL COMMENT '剩余数量',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='图书信息表';
 
 -- ----------------------------
 -- Table structure for `category`
@@ -55,7 +84,7 @@ CREATE TABLE `introduction` (
   `category_id` int(11) DEFAULT NULL COMMENT '分类ID',
   `user_id` int(11) DEFAULT NULL COMMENT '用户ID',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='旅游攻略表';
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='旅游攻略表';
 
 -- ----------------------------
 -- Table structure for `notice`
@@ -67,7 +96,21 @@ CREATE TABLE `notice` (
   `content` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '公告内容',
   `time` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '发布时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='公告信息表';
+
+-- ----------------------------
+-- Table structure for `record`
+-- ----------------------------
+DROP TABLE IF EXISTS `record`;
+CREATE TABLE `record` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `user_id` int(11) DEFAULT NULL COMMENT '用户ID',
+  `book_id` int(11) DEFAULT NULL COMMENT '图书ID',
+  `time` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '借阅时间',
+  `status` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '审核状态',
+  `reason` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '审核说明',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='借阅记录表';
 
 -- ----------------------------
 -- Table structure for `user`
